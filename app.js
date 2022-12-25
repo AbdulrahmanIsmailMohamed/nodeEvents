@@ -1,6 +1,10 @@
 const express = require('express');
 const events = require('./routes/event.routes');
 const app = express();
+const db = require('./config/connect')
+
+// middleware
+app.use(express.json())
 
 // beging ejs
 app.set('view engine', 'ejs')
