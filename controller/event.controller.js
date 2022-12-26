@@ -31,7 +31,12 @@ const getSingleEvent = async (req, res) => {
 
 }
 
+const createNewEvent = (req, res) => {
+    res.render("event/create")
+}
+
 module.exports = {
     getAllEvent,
-    getSingleEvent
+    getSingleEvent,
+    createNewEvent
 }
