@@ -1,4 +1,4 @@
-// const eventExpressValidate = require('../middleware/eventExpressValidateMW')
+const { check, validationResult } = require('express-validator')
 const {
     getAllEvent,
     getSingleEvent,
@@ -6,7 +6,7 @@ const {
     createNewEventPost
 } = require('../controller/event.controller');
 const router = require('express').Router();
-const validate = require('../middleware/eventValidateMW')
+const validate = require('../util/eventExpressValidateMW')
 
 
 router.get('/', getAllEvent);

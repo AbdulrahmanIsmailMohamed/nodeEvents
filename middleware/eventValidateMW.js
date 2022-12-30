@@ -1,5 +1,4 @@
 const validate = require("../util/eventValidator");
-
 module.exports = (req, res, nxt) => {
     let valide = validate(req.body);
     if (!valide) {
