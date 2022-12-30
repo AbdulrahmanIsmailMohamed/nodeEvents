@@ -6,7 +6,7 @@ const eventSchema = mongoose.Schema({
         required: [true, "must provide name"],
         trim: true,
         minLength: [2, "title can't be less 2 character"],
-        maxLength: [10, "title can't be more than 10 character"]
+        maxLength: [20, "title can't be more than 10 character"]
     },
     description: {
         type: String,
@@ -18,14 +18,15 @@ const eventSchema = mongoose.Schema({
         type: String,
         required: true,
         minLength: [2, "location can't be less 2 character"],
+        maxLength: [10, "location can't be more than 10 character"],
     },
     date: {
         type: Date,
-        required: true,
+        required: [true, 'must provide date'],
     },
     created_at: {
         type: Date,
-        require: true
+        require: [true, 'must provide created_at']
     }
 });
 

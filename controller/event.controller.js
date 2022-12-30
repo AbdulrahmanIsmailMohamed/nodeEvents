@@ -11,7 +11,8 @@ const getAllEvent = async (req, res) => {
             chunk.push(events.slice(i, chunkSize + i))
         }
         res.render('event/index', {
-            chunk: chunk
+            chunk: chunk,
+            message: req.flash('info')
         })
     } catch (error) {
         res.status(500).json(error)
@@ -34,16 +35,15 @@ const getSingleEvent = async (req, res) => {
 
 const createNewEventGet = (req, res) => {
     res.render("event/create", {
-        errors: false
+        errors: req.flash('errors')
     })
 }
 
 const createNewEventPost = (req, res) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-        res.render('event/create', {
-            errors: errors.array()
-        })
+        req.flash("errors", errors.array())
+        res.redirect('/events/create')
     } else {
 
         let newEvent = new Event({
@@ -56,7 +56,7 @@ const createNewEventPost = (req, res) => {
 
         newEvent.save((err) => {
             if (!err) {
-                console.log('event was added')
+                req.flash('info',"The Event Was Created Successfully")
                 res.redirect('/events')
             } else {
                 console.log(err)
