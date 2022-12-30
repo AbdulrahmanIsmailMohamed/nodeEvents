@@ -1,4 +1,5 @@
-const Event = require("../model/event.model");
+const Event = require("../model/eventSchema");
+// const { check, validationResult } = require('express-validator')
 
 const getAllEvent = async (req, res) => {
     try {
@@ -31,12 +32,32 @@ const getSingleEvent = async (req, res) => {
 
 }
 
-const createNewEvent = (req, res) => {
+const createNewEventGet = (req, res) => {
     res.render("event/create")
 }
 
+const createNewEventPost = (req, res) => {
+    let newEvent = new Event({
+        title: req.body.title,
+        description: req.body.description,
+        date: req.body.date,
+        location: req.body.location,
+        created_at: Date.now()
+    })
+
+    newEvent.save((err) => {
+        if (!err) {
+            console.log('event was added')
+            res.redirect('/events')
+        } else {
+            console.log(err)
+        }
+    })
+
+}
 module.exports = {
     getAllEvent,
     getSingleEvent,
-    createNewEvent
+    createNewEventPost,
+    createNewEventGet
 }

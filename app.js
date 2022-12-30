@@ -1,7 +1,7 @@
 const express = require('express');
 const events = require('./routes/event.routes');
 const app = express();
-const db = require('./config/connect')
+const db = require('./db/connect')
 const badyParser = require('body-parser')
 
 // middleware
