@@ -1,5 +1,7 @@
 const Event = require("../model/eventSchema");
 const { check, validationResult } = require('express-validator')
+const moment = require('moment')
+moment().format();
 
 const getAllEvent = async (req, res) => {
     try {
@@ -45,7 +47,6 @@ const createNewEventPost = (req, res) => {
         req.flash("errors", errors.array())
         res.redirect('/events/create')
     } else {
-
         let newEvent = new Event({
             title: req.body.title,
             description: req.body.description,
@@ -53,10 +54,9 @@ const createNewEventPost = (req, res) => {
             location: req.body.location,
             created_at: Date.now()
         })
-
         newEvent.save((err) => {
             if (!err) {
-                req.flash('info',"The Event Was Created Successfully")
+                req.flash('info', "The Event Was Created Successfully")
                 res.redirect('/events')
             } else {
                 console.log(err)
@@ -64,9 +64,57 @@ const createNewEventPost = (req, res) => {
         })
     }
 }
+
+const updateEventGET = async (req, res) => {
+    try {
+        const { id: eventId } = req.params;
+        let event = await Event.findOne({ _id: eventId })
+        if (!event) return res.status(404).send("Not Found");
+        res.render('event/edit', {
+            event: event,
+            eventDate: moment(event.date).format('YYYY-MM-DD'),
+            errors: req.flash('errors'),
+            message: req.flash('info'),
+        });
+    } catch (error) {
+        for (const err in error) {
+            res.status(500).json(err.message)
+        }
+    }
+}
+
+const updateEventPost = async (req, res) => {
+    try {
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            req.flash("errors", errors.array())
+            res.redirect('/events/update/' + req.body.id)
+        } else {
+            const update = {
+                title: req.body.title,
+                description: req.body.description,
+                location: req.body.location,
+                date: req.body.date
+            }
+            const query = { _id: req.body.id }
+            const event = await Event.findOneAndUpdate(query, update)
+            if (!event) return res.status(404).json(event);
+            req.flash("info", "the event was updated successfully:)");
+            res.redirect("/events")
+        }
+    } catch (error) {
+        for (const err in error) {
+            res.status(500).json(err)
+        }
+    }
+
+}
+
 module.exports = {
     getAllEvent,
     getSingleEvent,
     createNewEventPost,
-    createNewEventGet
+    createNewEventGet,
+    updateEventGET,
+    updateEventPost,
 }
