@@ -4,8 +4,9 @@ const {
     createNewEventGet,
     createNewEventPost,
     updateEventGET,
-    updateEventPost
-} = require('../controller/event.controller');
+    updateEventPost,
+    deleteEvent
+} = require('../controller/eventController');
 const router = require('express').Router();
 const validate = require('../util/eventExpressValidateMW')
 
@@ -18,5 +19,7 @@ router.route('/create').get(createNewEventGet).post(validate, createNewEventPost
 // update event
 router.get("/update/:id",updateEventGET)
 router.post("/update",validate,updateEventPost)
+
+router.get("/delete/:id",deleteEvent)
 
 module.exports = router

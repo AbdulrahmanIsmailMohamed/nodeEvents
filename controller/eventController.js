@@ -98,16 +98,30 @@ const updateEventPost = async (req, res) => {
             }
             const query = { _id: req.body.id }
             const event = await Event.findOneAndUpdate(query, update)
-            if (!event) return res.status(404).json(event);
+            if (!event) return res.status(404).send("Not Found");
             req.flash("info", "the event was updated successfully:)");
             res.redirect("/events")
         }
     } catch (error) {
         for (const err in error) {
-            res.status(500).json(err)
+            res.status(500).json(err.message)
         }
     }
 
+}
+
+const deleteEvent = async (req, res) => {
+    try {
+        const { id: eventId } = req.params;
+        const event = await Event.deleteOne({ _id: eventId });
+        if (!event) return res.status(404).send("Not Found");
+        req.flash("info", "the event was deleted successfully-_-")
+        res.redirect("/events/")
+    } catch (error) {
+        for (const err in error) {
+            res.status(500).json(err.message)
+        }
+    }
 }
 
 module.exports = {
@@ -117,4 +131,5 @@ module.exports = {
     createNewEventGet,
     updateEventGET,
     updateEventPost,
+    deleteEvent
 }
