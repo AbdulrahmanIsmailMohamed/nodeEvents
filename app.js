@@ -1,15 +1,15 @@
 const express = require('express');
-const events = require('./routes/event.routes');
 const app = express();
+const events = require('./routes/eventRoute');
+const user = require('./routes/userRoute');
 const db = require('./db/connect')
-const badyParser = require('body-parser')
 const session = require('express-session')
 const flash = require('connect-flash')
 require('dotenv').config()
 
 // middleware
-app.use(badyParser.urlencoded({ extended: false }));
-app.use(badyParser.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 // beging connect-flash and express-session
 app.use(session({
@@ -29,6 +29,9 @@ app.use(express.static('node_modules'))
 
 // beging events route
 app.use('/events', events);
+
+// beging user route
+app.use("/user",user)
 
 const port = process.env.PORT || 3000;
 app.listen(port, console.log(`sever Running in port ${port}...`));

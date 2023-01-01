@@ -6,7 +6,7 @@ const eventSchema = mongoose.Schema({
         required: [true, "must provide name"],
         trim: true,
         minLength: [2, "title can't be less 2 character"],
-        maxLength: [20, "title can't be more than 10 character"]
+        maxLength: [20, "title can't be more than 20 character"]
     },
     description: {
         type: String,

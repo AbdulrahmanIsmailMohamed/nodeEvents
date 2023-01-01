@@ -1,4 +1,4 @@
-const Event = require("../model/eventSchema");
+const Event = require("../model/Event");
 const { check, validationResult } = require('express-validator')
 const moment = require('moment')
 moment().format();
@@ -124,6 +124,11 @@ const deleteEvent = async (req, res) => {
     }
 }
 
+const searchEvent = (req, res) => {
+    const query = req.body.title;
+    res.send(`query = ${query}`)
+}
+
 module.exports = {
     getAllEvent,
     getSingleEvent,
@@ -131,5 +136,6 @@ module.exports = {
     createNewEventGet,
     updateEventGET,
     updateEventPost,
-    deleteEvent
+    deleteEvent,
+    searchEvent
 }
