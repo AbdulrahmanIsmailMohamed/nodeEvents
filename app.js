@@ -20,18 +20,26 @@ app.use(session({
 }))
 app.use(flash())
 
+// glopal variable
+app.use((req, res, nxt) => {
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    res.locals.invalid = req.flash('invalid');
+    nxt()
+})
+
 // beging ejs
 app.set('view engine', 'ejs')
 
 // beging static
-app.use(express.static('public'))
-app.use(express.static('node_modules'))
+app.use(express.static('public'));
+app.use(express.static('node_modules'));
 
 // beging events route
 app.use('/events', events);
 
 // beging user route
-app.use("/user",user)
+app.use("/user", user);
 
 const port = process.env.PORT || 3000;
 app.listen(port, console.log(`sever Running in port ${port}...`));

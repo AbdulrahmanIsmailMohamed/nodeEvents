@@ -6,13 +6,13 @@ const userSchema = mongoose.Schema({
     name: {
         type: String,
         required: true,
-        minLength: [3, "title can't be less 3 character"],
+        minLength: [5, "title can't be less 3 character"],
         maxLength: [15, "title can't be more than 15 character"]
     },
     email: {
         type: String,
         required: true,
-        unique: true,
+        // unique: true,
         validate: {
             validator: (val) => valid.isEmail(val),
             message: `{VALUE} isn't valid email`
