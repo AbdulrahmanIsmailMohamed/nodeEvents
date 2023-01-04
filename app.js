@@ -4,20 +4,30 @@ const events = require('./routes/eventRoute');
 const user = require('./routes/userRoute');
 const db = require('./db/connect')
 const session = require('express-session')
-const flash = require('connect-flash')
-require('dotenv').config()
+const flash = require('connect-flash');
+const passport = require('passport');
+require('dotenv').config();
+
+// passport config
+require("./config/passport")(passport)
 
 // middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// beging connect-flash and express-session
+// beging express-session
 app.use(session({
     secret: process.env.SECRET_SESSION,
     resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 60000 * 15 }
 }))
+
+// passport middleWare
+app.use(passport.initialize());
+app.use(passport.session())
+
+// connect flash
 app.use(flash())
 
 // glopal variable
@@ -34,6 +44,12 @@ app.set('view engine', 'ejs')
 // beging static
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
+
+
+// route
+app.get("/", (req, res) => {
+    res.redirect('/events')
+})
 
 // beging events route
 app.use('/events', events);

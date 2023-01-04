@@ -1,14 +1,17 @@
 const User = require("../model/User");
 const bcrypt = require('bcryptjs')
-const { check, validationResult } = require('express-validator')
-
+const { check, validationResult } = require('express-validator');
+const passport = require("passport");
 
 const loginView = (req, res) => {
     res.render("user/login")
 }
-const login = (req, res) => {
-    console.log(req.body);
-    res.json("user in login...")
+const login = (req, res,nxt) => {
+    passport.authenticate('local', {
+        successRedirect: '/user/profile',
+        failureRedirect: '/user/login',
+        failureFlash: true
+    })(req, res, nxt);
 }
 
 const signupView = (req, res) => {
