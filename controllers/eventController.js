@@ -52,7 +52,8 @@ const createNewEventPost = (req, res) => {
             description: req.body.description,
             date: req.body.date,
             location: req.body.location,
-            created_at: Date.now()
+            created_at: Date.now(),
+            userId: req.user.id
         })
         newEvent.save((err) => {
             if (!err) {

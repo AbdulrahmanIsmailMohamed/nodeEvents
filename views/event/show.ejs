@@ -16,8 +16,10 @@
             <%= event.location%>
           </p>
           <p><span class="badge text-bg-danger"><%= event.date.toDateString()%></span></p>
+          <% if (user && user.id == event.userId) { %>
           <a href="<%= "/events/update/" + event.id%>" class="btn btn-primary">Edit</a>
           <a href="<%= "/events/delete/" + event.id%>" class="btn btn-danger">Delete</a>
+          <% } %>
         </div>
       </div>
     </div>

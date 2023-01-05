@@ -27,6 +27,10 @@ const eventSchema = mongoose.Schema({
     created_at: {
         type: Date,
         require: [true, 'must provide created_at']
+    },
+    userId: {
+        type: String,
+        required: true
     }
 });
 
