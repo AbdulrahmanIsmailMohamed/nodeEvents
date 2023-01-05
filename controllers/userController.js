@@ -6,7 +6,7 @@ const passport = require("passport");
 const loginView = (req, res) => {
     res.render("user/login")
 }
-const login = (req, res,nxt) => {
+const login = (req, res, nxt) => {
     passport.authenticate('local', {
         successRedirect: '/user/profile',
         failureRedirect: '/user/login',
@@ -20,15 +20,16 @@ const signupView = (req, res) => {
     });
 }
 const signup = async (req, res) => {
-    const { name, email, password, confirm_password } = req.body;
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-        req.flash("errors", errors.array())
-    } if (password != confirm_password) {
-        req.flash("invalid", "Passwords do not match")
-        res.redirect('/user/signup')
-    } else {
-        try {
+    try {
+        const { name, email, password, confirm_password } = req.body;
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            req.flash("errors", errors.array())
+        } if (password != confirm_password) {
+            req.flash("invalid", "Passwords do not match")
+            res.redirect('/user/signup')
+        } else {
+
             const user = await User.findOne({ email: email });
             if (user) {
                 console.log(user);
@@ -49,9 +50,10 @@ const signup = async (req, res) => {
                     });
                 });
             }
-        } catch (error) {
-            console.log(error);
+
         }
+    } catch (error) {
+        console.log(error);
     }
 }
 

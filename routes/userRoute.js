@@ -10,6 +10,7 @@ const {
     profile,
     logout
 } = require("../controllers/userController");
+const { ensureAuthenticated } = require("../config/auth");
 
 // login
 router.route("/login").get(loginView).post(login);
@@ -18,7 +19,7 @@ router.route("/login").get(loginView).post(login);
 router.route("/signup").get(signupView).post(validate, signup);
 
 // profile
-router.get("/profile", profile);
+router.get("/profile", ensureAuthenticated, profile);
 
 // logout
 router.get("/logout", logout)
