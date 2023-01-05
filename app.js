@@ -35,7 +35,8 @@ app.use((req, res, nxt) => {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
     res.locals.invalid = req.flash('invalid');
-    nxt()
+    res.locals.user = req.user;
+    nxt();
 })
 
 // beging ejs

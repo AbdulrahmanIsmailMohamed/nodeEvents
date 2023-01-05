@@ -24,12 +24,18 @@
       </nav> -->
 
       <ul class="navbar-nav ms-auto">
+        <% if (!user) { %>
         <li class="nav-item">
           <a class="nav-link" href="/user/login">Signin</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/user/signup">Signup</a>
         </li>
+        <% } else { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/user/logout">Logout</a>
+        </li>
+        <%}%>
       </ul>
     </div>
   </div>

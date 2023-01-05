@@ -62,7 +62,9 @@ const profile = (req, res) => {
 }
 
 const logout = (req, res) => {
-    res.json("logout...")
+    req.logout((err) => { if (err) console.log(err) });
+    req.flash('success_msg', 'You are logged out');
+    res.redirect("/user/login")
 }
 
 module.exports = {
