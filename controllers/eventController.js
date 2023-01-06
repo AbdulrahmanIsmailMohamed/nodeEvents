@@ -1,24 +1,33 @@
 const Event = require("../model/Event");
 const { check, validationResult } = require('express-validator')
-const moment = require('moment')
+const moment = require('moment');
 moment().format();
 
-const getAllEvent = async (req, res) => {
-    try {
-        const events = await Event.find({});
-        let chunk = []
-        let chunkSize = 3
-        let eventLength = events.length;
-        for (let i = 0; i < eventLength; i += chunkSize) {
-            chunk.push(events.slice(i, chunkSize + i))
-        }
-        res.render('event/index', {
-            chunk: chunk,
-            message: req.flash('info')
-        })
-    } catch (error) {
-        res.status(500).json(error)
+const getAllEvent = (req, res) => {
+    let pageNo = parseInt(req.params.pageNo) || 1;
+    if (req.params.pageNo == 0) pageNo = 1;
+    let q = {
+        skip: 5 * (pageNo - 1),
+        limit: 5
     }
+    let totalDocs = 0;
+    Event.countDocuments({}).then((response) => {
+        totalDocs = parseInt(response);
+        Event.find({}, {}, q, (err, events) => {
+            let chunk = []
+            let chunkSize = 3
+            let eventLength = events.length;
+            for (let i = 0; i < eventLength; i += chunkSize) {
+                chunk.push(events.slice(i, chunkSize + i))
+            }
+            res.render('event/index', {
+                chunk: chunk,
+                message: req.flash('info'),
+                total: parseInt(totalDocs),
+                pageNo: pageNo
+            })
+        }).sort({ _id: -1 });
+    })
 };
 
 const getSingleEvent = async (req, res) => {
@@ -58,7 +67,7 @@ const createNewEventPost = (req, res) => {
         newEvent.save((err) => {
             if (!err) {
                 req.flash('info', "The Event Was Created Successfully")
-                res.redirect('/events')
+                res.redirect('/events/allevents/')
             } else {
                 console.log(err)
             }
@@ -101,7 +110,7 @@ const updateEventPost = async (req, res) => {
             const event = await Event.findOneAndUpdate(query, update)
             if (!event) return res.status(404).send("Not Found");
             req.flash("info", "the event was updated successfully:)");
-            res.redirect("/events")
+            res.redirect("/events/allevent/")
         }
     } catch (error) {
         for (const err in error) {
@@ -117,7 +126,7 @@ const deleteEvent = async (req, res) => {
         const event = await Event.deleteOne({ _id: eventId });
         if (!event) return res.status(404).send("Not Found");
         req.flash("info", "the event was deleted successfully-_-")
-        res.redirect("/events/")
+        res.redirect("/events/allevents/")
     } catch (error) {
         for (const err in error) {
             res.status(500).json(err.message)

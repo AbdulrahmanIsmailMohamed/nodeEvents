@@ -12,7 +12,7 @@ const router = require('express').Router();
 const validate = require('../util/eventExpressValidateMW')
 const { ensureAuthenticated } = require("../config/auth");
 
-router.get('/', ensureAuthenticated, getAllEvent);
+router.get('/allevents/:pageNo?', ensureAuthenticated, getAllEvent);
 
 router.get('/getevent/:id', ensureAuthenticated, getSingleEvent);
 

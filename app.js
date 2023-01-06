@@ -49,7 +49,7 @@ app.use(express.static('node_modules'));
 
 // route
 app.get("/", (req, res) => {
-    res.redirect('/events')
+    res.redirect('/events/allevents')
 })
 
 // beging events route
