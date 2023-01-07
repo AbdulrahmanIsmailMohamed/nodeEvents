@@ -6,6 +6,7 @@ const db = require('./db/connect')
 const session = require('express-session')
 const flash = require('connect-flash');
 const passport = require('passport');
+const errorHandling = require('./middleware/errorHandlingMW');
 require('dotenv').config();
 
 // passport config
@@ -58,6 +59,9 @@ app.use('/events', events);
 
 // beging user route
 app.use("/user", user);
+
+// error Handling
+app.use(errorHandling)
 
 const port = process.env.PORT || 3000;
 app.listen(port, console.log(`sever Running in port ${port}...`));

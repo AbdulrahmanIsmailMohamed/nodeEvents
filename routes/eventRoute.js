@@ -1,12 +1,12 @@
 const {
     getAllEvent,
     getSingleEvent,
-    createNewEventGet,
-    createNewEventPost,
-    updateEventGET,
-    updateEventPost,
+    createNewEvent,
+    updateEvent,
     deleteEvent,
-    searchEvent
+    // searchEvent,
+    createNewEventView,
+    updateEventView
 } = require('../controllers/eventController');
 const router = require('express').Router();
 const validate = require('../util/eventExpressValidateMW')
@@ -16,11 +16,11 @@ router.get('/allevents/:pageNo?', ensureAuthenticated, getAllEvent);
 
 router.get('/getevent/:id', ensureAuthenticated, getSingleEvent);
 
-router.route('/create').get(ensureAuthenticated, createNewEventGet).post(validate, createNewEventPost)
+router.route('/create').get(ensureAuthenticated, createNewEventView).post(validate, createNewEvent)
 
 // update event
-router.get("/update/:id", updateEventGET)
-router.post("/update", validate, updateEventPost)
+router.get("/update/:id", updateEventView)
+router.post("/update", validate, updateEvent)
 
 router.get("/delete/:id", deleteEvent)
 
