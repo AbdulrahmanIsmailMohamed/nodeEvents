@@ -110,7 +110,7 @@ const updateEventPost = async (req, res) => {
             const event = await Event.findOneAndUpdate(query, update)
             if (!event) return res.status(404).send("Not Found");
             req.flash("info", "the event was updated successfully:)");
-            res.redirect("/events/allevent/")
+            res.redirect("/events/allevents")
         }
     } catch (error) {
         for (const err in error) {
