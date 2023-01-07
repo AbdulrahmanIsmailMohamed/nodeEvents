@@ -38,7 +38,12 @@ const signup = async (req, res) => {
                     error: req.flash("error")
                 });
             } else {
-                const newUser = new User({ name: name, email: email, password: password });
+                const newUser = new User({
+                    name,
+                    email,
+                    password,
+                    avatar: "profile.png"
+                });
                 bcrypt.genSalt(10, (err, salt) => {
                     bcrypt.hash(newUser.password, salt, (err, hash) => {
                         if (err) throw err;
@@ -61,6 +66,22 @@ const profile = (req, res) => {
     res.render("user/profile");
 }
 
+const uploadAvatar = async (req, res) => {
+    try {
+        let newFields = {
+            avatar: req.file.filename
+        }
+        const update = await User.updateOne({ _id: req.user._id }, newFields);
+        if (!update) return res.status(404).send("not found");
+        res.redirect('/user/profile')
+    } catch (err) {
+        for (const e in err.errors) {
+            console.log(e.message);
+            res.status(500).send("Internal Servar Error!!")
+        }
+    }
+}
+
 const logout = (req, res) => {
     req.logout((err) => { if (err) console.log(err) });
     req.flash('success_msg', 'You are logged out');
@@ -73,5 +94,6 @@ module.exports = {
     profile,
     signup,
     signupView,
-    logout
+    logout,
+    uploadAvatar
 }

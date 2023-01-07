@@ -18,19 +18,20 @@ const userSchema = mongoose.Schema({
             message: `{VALUE} isn't valid email`
         }
     },
-    // isAdmin: {
-    //     type: Boolean
-    // },
     password: {
         type: String,
         required: true,
         minLength: 5,
         validate: {
             validator: (val) => valid.isStrongPassword(val),
-            message:`{PASSWORD} isn't strong password`
+            message: `{PASSWORD} isn't strong password`
         }
+    },
+    avatar: {
+        type: String,
+        required: true
     }
 });
 
-const User = mongoose.model("User",userSchema,"Users")
+const User = mongoose.model("User", userSchema, "Users")
 module.exports = User;
